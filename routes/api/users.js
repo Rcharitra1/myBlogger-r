@@ -1,16 +1,121 @@
 const express=require('express');
 
+const router=express.Router();
+//Load user model
+
+const User = require('../../models/User.js');
+
+const gravatar=require('gravatar');
+
+const becrypt=require('bcryptjs');
+const jwt=require('jsonwebtoken');
+
+const keys=require('../../config/keys');
+
 
 
 
 //@route GET api/users/test
 //desc Tests post route
 
-const router=express.Router();
+//public routes
+
 
 router.get('/test', (req, res)=> res.json({
     msg:"Users works"
 }));
 
 
+
+
+//@route GET api/users/register
+//desc Tests post route
+
+//public routes
+
+
+
+router.post('/register', (req, res)=>{
+    User.findOne({email:req.body.email})
+    .then(user => {
+        if(user){
+            return res.status(400).json({
+                email : 'Email already exists'
+            });
+        }else{
+            const avatar=gravatar.url(req.body.email, {
+                s:'200' ,//size
+                r:'pg',//rating
+                d:'mm'//default
+            });
+            const newUser=new User({
+                name:req.body.name,
+                email:req.body.email,
+                avatar,
+                password:req.body.password
+            });
+            becrypt.genSalt(10, (err, salt) => {
+                becrypt.hash(newUser.password, salt, (err, hash)=>{
+                    if(err){
+                        throw err;
+                    }
+                    newUser.password=hash;
+                    newUser.save()
+                    .then(user => res.json(user))
+                    .catch(err => console.log(err))
+                })
+            } )
+        }
+    })
+});
+
+
+
+//@route GET api/users/login
+//@desc Login USer/ returning JWT Token
+//@access Public
+
+
+router.post('/login', (req, res) => {
+    const email=req.body.email;
+    const password=req.body.password;
+
+    //find the user
+
+    console.log(email);
+    console.log(password);
+
+    User.findOne({email})
+    .then(user => {
+        if(!user){
+            return res.status(404).json({email:'User not found'});
+        }
+
+        //check password
+
+        becrypt.compare(password, user.password)
+        .then(isMatch=>{
+            if(isMatch){
+                //user matched
+                //Create JWT payload
+                const payload={
+                    id:user.id,
+                    name:user.name,
+                    avatar:user.avatar
+                };
+                jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600}, (err, token)=>{
+                    res.json({
+                        succes:true,
+                        token:`Bearer ${token}`
+                    })
+                });
+            }else{
+                return res.status(400).json({password:'Password incorrect'});
+            }
+        });
+    });
+
+});
+
+//public routes
 module.exports=router;

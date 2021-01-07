@@ -4,8 +4,12 @@ const express=require('express');
 
 const mongoose=require('mongoose');
 
+const bodyParser=require('body-parser');
+
+
 
 const users=require('./routes/api/users');
+
 
 
 const profile=require('./routes/api/profile');
@@ -16,6 +20,12 @@ const blogs=require('./routes/api/blogs');
 
 
 const app=express();
+
+
+//body parser middleware
+
+app.use(bodyParser.urlencoded({excluded:false}));
+app.use(bodyParser.json());
 
 //DB config
 

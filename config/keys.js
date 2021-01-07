@@ -2,7 +2,7 @@ const { mongo } = require("mongoose")
 
 module.exports={
     mongoURI:"mongodb+srv://rcharitra1:1234@cluster0.t0wcg.mongodb.net/<dbname>?retryWrites=true&w=majority",
-    secretOrKey:'SECRET'
+    secretOrKey:'secret'
     
 }
 
