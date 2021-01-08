@@ -99,4 +99,4 @@ const BloggerSchema=new Schema({
 });
 
 
-module.exports=Blogger=mongoose.model('blogger', BloggerSchema);
+module.exports=mongoose.model('blogger', BloggerSchema);
