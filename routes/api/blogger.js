@@ -9,6 +9,10 @@ const passport=require('passport');
 const Blogger=require('../../models/Blogger');
 const User=require('../../models/User');
 
+//Load Validation
+
+const validateBloggerInput=require('../../validation/blogger');
+
 
 //@route GET api/blogger/test
 //desc Tests post route
@@ -45,21 +49,28 @@ router.get('/', passport.authenticate('jwt', {session:false}), (req, res)=>{
 //private route
 
 router.post('/', passport.authenticate('jwt', {session:false}), (req, res)=>{
+    console.log(req.body);
+    //validator method for blogger details
+    const {errors, isValid}=validateBloggerInput(req.body);
+
+    if(!isValid){
+        res.status(400).json(errors);
+    }
    //Get Fields
 
    const bloggerDetails={};
-   bloggerDetails.user=req.user.id,
-   (req.body.handle) && (bloggerDetails.handle=req.body.handle);
-   (req.body.organization) && (bloggerDetails.organization=req.body.organization);
-   (req.body.location) && (bloggerDetails.location=req.body.location);
-   (req.body.bio) && (bloggerDetails.bio=req.body.bio);
+   bloggerDetails.user=req.user.id;
+   if(req.body.handle)  bloggerDetails.handle=req.body.handle;
+   if(req.body.organization) bloggerDetails.organization=req.body.organization;
+   if(req.body.location) bloggerDetails.location=req.body.location;
+   if(req.body.bio) bloggerDetails.bio=req.body.bio;
    if(typeof(req.body.skills)!=='undefined'){
        bloggerDetails.speciality=req.body.speciality.split(',');
    }
    bloggerDetails.socialHandles={};
-   (req.body.youtube) && (bloggerDetails.socialHandles.youtube=req.body.youtube);
-   (req.body.twitter) && (bloggerDetails.socialHandles.twitter=req.body.twitter);
-   (req.body.facebook) && (bloggerDetails.socialHandles.facebook=req.body.facebook);
+   if(req.body.youtube) bloggerDetails.socialHandles.youtube=req.body.youtube;
+   if(req.body.twitter) bloggerDetails.socialHandles.twitter=req.body.twitter;
+   if(req.body.facebook) bloggerDetails.socialHandles.facebook=req.body.facebook;
 
    console.log(bloggerDetails);
 
