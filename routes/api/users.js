@@ -17,6 +17,8 @@ const passport=require('passport');
 
 const validateRegisterInput=require('../../validation/register');
 
+const validateLoginInput=require('../../validation/login');
+
 
 
 
@@ -45,10 +47,6 @@ router.get('/test', (req, res)=> res.json({
 router.post('/register', (req, res)=>{
     const {errors, isValid} = validateRegisterInput(req.body);
 
-    console.log(req.body);
-
-    console.log(errors)
-    console.log(isValid)
 
     if(!isValid){
         return res.status(400).json(errors)
@@ -100,14 +98,20 @@ router.post('/login', (req, res) => {
     const password=req.body.password;
 
     //find the user
+    const {errors, isValid}=validateLoginInput(req.body);
 
-    console.log(email);
-    console.log(password);
+
+
+    if(!isValid){
+        return res.status(400).json(errors)
+    }
+
 
     User.findOne({email})
     .then(user => {
         if(!user){
-            return res.status(404).json({email:'User not found'});
+            errors.email='User not found';
+            return res.status(404).json(errors);
         }
 
         //check password
@@ -129,7 +133,8 @@ router.post('/login', (req, res) => {
                     })
                 });
             }else{
-                return res.status(400).json({password:'Password incorrect'});
+                errors.password='password incorrect';
+                return res.status(400).json({errors});
             }
         });
     });

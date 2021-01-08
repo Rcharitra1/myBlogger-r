@@ -12,7 +12,7 @@ const users=require('./routes/api/users');
 
 
 
-const profile=require('./routes/api/profile');
+const blogger=require('./routes/api/blogger');
 
 
 const blogs=require('./routes/api/blogs');
@@ -55,7 +55,7 @@ require('./config/passport')(passport);
 //user routes 
 
 app.use('/api/users', users);
-app.use('/api/profile', profile);
+app.use('/api/blogger', blogger);
 app.use('/api/blogs', blogs);
 
 
