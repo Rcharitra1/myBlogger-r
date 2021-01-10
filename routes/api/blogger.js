@@ -6,6 +6,7 @@ const mongoose=require('mongoose');
 const passport=require('passport');
 
 //Load blogger home page
+
 const Blogger=require('../../models/Blogger');
 const User=require('../../models/User');
 
@@ -13,14 +14,14 @@ const User=require('../../models/User');
 
 const validateBloggerInput=require('../../validation/blogger');
 
+const validateExperienceInput=require('../../validation/experience');
+
+
+const validateEducationInput=require('../../validation/education');
 
 //@route GET api/blogger/test
 //desc Tests post route
-
 //public routes
-
-
-
 
 router.get('/test', (req, res)=> res.json({
     msg:"blogger works"
@@ -28,8 +29,8 @@ router.get('/test', (req, res)=> res.json({
 
 //@route GET api/blogger
 //desc Get current blogger
-
 //private
+
 router.get('/', passport.authenticate('jwt', {session:false}), (req, res)=>{
     const errors={};
     Blogger.findOne({user:req.user.id})
@@ -42,11 +43,9 @@ router.get('/', passport.authenticate('jwt', {session:false}), (req, res)=>{
     }).catch(err=>res.status(404).json(err));
 });
 
-
 //@route Get api/blogger/handle/:handle
 //desc Find Blogger by Handle
 //public 
-
 
 router.get('/handle/:handle',(req, res)=>{
     const errors={};
@@ -64,11 +63,9 @@ router.get('/handle/:handle',(req, res)=>{
     .catch(err=>res.status(404).json(err));
 } )
 
-
 //@route Get api/blogger/user/:user_id
 //desc find user by user id
 //public 
-
 
 router.get('/user/:user_id', (req, res)=>{
     const errors={};
@@ -83,11 +80,9 @@ router.get('/user/:user_id', (req, res)=>{
     }).catch(err=>res.status(404).json({profile:'This user id doesnt exist'}));
 })
 
-
 //@route Get api/blogger/all
 //desc Get all bloggers 
 //public 
-
 
 router.get('/all', (req, res)=>{
     const errors={};
@@ -105,20 +100,6 @@ router.get('/all', (req, res)=>{
     }).catch(err=> res.status(404).json({profile: 'there are no bloggers to display'}));
 })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //@route Post api/blogger
 //desc post to update current blogger details
 //private route
@@ -130,7 +111,6 @@ router.post('/', passport.authenticate('jwt', {session:false}), (req, res)=>{
         res.status(400).json(errors);
     }
    //Get Fields
-
    const bloggerDetails={};
    bloggerDetails.user=req.user.id;
    if(req.body.handle)  bloggerDetails.handle=req.body.handle;
@@ -147,7 +127,6 @@ router.post('/', passport.authenticate('jwt', {session:false}), (req, res)=>{
 
    console.log(bloggerDetails);
 
-
    Blogger.findOne({user: req.user.id})
    .then(blogger=>{
        if(blogger){
@@ -156,7 +135,9 @@ router.post('/', passport.authenticate('jwt', {session:false}), (req, res)=>{
             .then(blogger=>res.json(blogger))
             .catch(err=>console.log(err));
 
-       }else{
+       }
+       else
+       {
            //create 
 
            //check if handle exists
@@ -171,16 +152,123 @@ router.post('/', passport.authenticate('jwt', {session:false}), (req, res)=>{
                new Blogger(bloggerDetails).save()
                .then(blogger=>res.json(blogger));
            });
-
-
        }
    })
 
 })
 
 
+//@route Post api/blogger/experience
+//desc post to create and update work experience details
+//private route
+
+router.post('/experience', passport.authenticate('jwt', {session:false}), (req, res)=>{
+    const {errors, isValid}=validateExperienceInput(req.body);
+
+    if(!isValid){
+        return res.status(400).json(errors);
+    }
+
+    Blogger.findOne({user:req.user.id})
+    .then(blogger =>{
+        
+        const newExp={
+            title:req.body.title,
+            company:req.body.company,
+            location:req.body.location,
+            from:req.body.from,
+            to:req.body.to,
+            current:req.body.current,
+            description: req.body.description 
+        }
+
+        //Add to exp array
+        blogger.experience.unshift(newExp);
+
+        blogger.save().then( blogger=> res.json(blogger));
+    })
+});
 
 
 
+
+
+//@route Post api/blogger/eduction
+//desc post to create and update educational details
+//private route
+
+router.post('/education', passport.authenticate('jwt', {session:false}), (req, res)=>{
+    const {errors, isValid}=validateEducationInput(req.body);
+
+    if(!isValid){
+        return res.status(400).json(errors);
+    }
+
+    Blogger.findOne({user:req.user.id})
+    .then(blogger =>{
+        
+        const newEdu={
+            degree:req.body.degree,
+            institution:req.body.institution,
+            finished:req.body.finished,
+            current:req.body.current,
+            description: req.body.description 
+        }
+
+        //Add to exp array
+        blogger.education.unshift(newEdu);
+
+        blogger.save().then( blogger=> res.json(blogger));
+    })
+});
+
+//@route Delete api/blogger/experience/:exp._id
+//desc deletes an experience
+//private route
+
+
+
+router.delete('/experience/:exp_id', passport.authenticate('jwt', {session: false}), (req, res)=>{
+    
+    Blogger.findOne({user: req.user.id})
+    .then(blogger=>{
+        const removeIndex=blogger.experience.map(item=>item.id).indexOf(req.params.exp_id);
+        blogger.experience.splice(removeIndex, 1);
+        blogger.save().then(blogger=> res.json(blogger));
+    }).catch(err=> res.status(404).json(err));
+});
+
+
+
+//@route Delete api/blogger/education/:edu._id
+//desc deletes an educational record
+//private route
+
+
+router.delete('/education/:edu_id', passport.authenticate('jwt', {session:false}), (req, res)=>{
+    console.log(req.params.edu_id);
+    Blogger.findOne({user:req.user.id})
+    .then(blogger=> {
+        const IndexToRemove=blogger.education.map(edu=>edu.id).indexOf(req.params.edu_id);
+
+        blogger.education.splice(IndexToRemove, 1);
+        blogger.save().then(blogger=>res.json(blogger));
+    }).catch(err=>res.status(400).json(err));
+});
+
+
+
+//@route Delete api/blogger
+//desc deletes an blogger details
+//private route
+
+
+router.delete('/', passport.authenticate('jwt', {session:false}), (req, res)=>{
+    Blogger.findOneAndRemove({user:req.user.id})
+    .then(()=>{
+        User.findOneAndRemove({_id: req.user.id})
+        .then(()=> res.json({success:'Delete profile and user'}));
+    })
+})
 
 module.exports=router;
