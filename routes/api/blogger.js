@@ -86,8 +86,8 @@ router.get('/user/:user_id', (req, res)=>{
 
 router.get('/all', (req, res)=>{
     const errors={};
-    Blogger.find().
-    populate('user', ['name', 'avatar'])
+    Blogger.find()
+    .populate('user', ['name', 'avatar'])
     .then(bloggers=>{
 
         if(!bloggers){
