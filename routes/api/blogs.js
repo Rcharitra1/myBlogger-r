@@ -50,7 +50,8 @@ router.get('/user/:blog_id', (req, res)=>{
 
 
 router.get('/all', (req, res)=>{
-    Blog.find()
+    Blog.find().
+    sort({date:-1})
     .then(blogs=>{
 
         if(!blogs){
