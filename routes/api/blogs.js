@@ -117,10 +117,19 @@ router.post('/create/:blog_id', passport.authenticate('jwt', {session:false}), (
 router.delete('/:blog_id', passport.authenticate('jwt', {session:false}), (req, res)=>{
 
 
-    console.log(req.params.blog_id);
-    Blog.findOneAndRemove({_id:req.params.blog_id})
-    .then(Blog=> res.json({success:'Delete was successful'}))
-    .catch(err=> res.status(404).json({err}));
+    User.findOne({user:req.user.id})
+    .then(Blogger=>{
+        Blog.findById(req.params.blog_id).
+        then(blog=>{
+            if(blog.user.toString()!==req.user.id){
+                return res.status(401).json({notauthorized:'User not authorized'});
+
+                
+            }
+            blog.remove().then(()=> res.json({success:true}).catch(err=>res.status(404).json({postnotfound:'post wasnt found'})))
+        });
+    });
+    
 
 
 })
