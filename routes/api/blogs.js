@@ -121,18 +121,76 @@ router.delete('/:blog_id', passport.authenticate('jwt', {session:false}), (req, 
     .then(Blogger=>{
         Blog.findById(req.params.blog_id).
         then(blog=>{
+            console.log(blog);
             if(blog.user.toString()!==req.user.id){
                 return res.status(401).json({notauthorized:'User not authorized'});
 
                 
             }
             blog.remove().then(()=> res.json({success:true}).catch(err=>res.status(404).json({postnotfound:'post wasnt found'})))
-        });
+        }).catch(err=>res.json(err));
     });
     
 
 
-})
+});
+
+
+
+
+//@route Post api/posts/like/:blog_id
+//@desc increment like of the blogger
+//@access private 
+
+router.post('/like/:blog_id', passport.authenticate('jwt', {session:false}), (req, res)=>{
+  
+    User.findOne({user: req.user.id})
+    .then(blogger=>{
+        Blog.findById(req.params.blog_id)
+        .then( blog =>{
+            console.log(blog);
+            if(blog.likes.filter(like=>like.user.toString()===req.user.id).length>0){
+                return res.status(400).json({liked:'User had an existing like'})
+            }
+            blog.likes.unshift({user: req.user.id});
+
+            blog.save().then(blog=>res.json(blog));
+        })
+    })
+});
+
+
+
+
+
+//@route Post api/posts/unlike/:blog_id
+//@desc unincrement like of the blogger
+//@access private 
+
+router.post('/unlike/:blog_id', passport.authenticate('jwt', {session:false}), (req, res)=>{
+  
+    User.findOne({user: req.user.id})
+    .then(blogger=>{
+        Blog.findById(req.params.blog_id)
+        .then( blog =>{
+            console.log(blog);
+            if(blog.likes.filter(like=>like.user.toString()===req.user.id).length==0){
+
+                res.status(400).json({nolike:'You dont have a like to remove'});
+            }
+
+            const indexToRemove=blog.likes.filter(like=>like.user.id).indexOf(req.user.id);
+                blog.likes.splice(indexToRemove, 1);
+
+           
+
+            blog.save().then(blog=>res.json(blog));
+        })
+    })
+});
+
+
+
 
 
 
