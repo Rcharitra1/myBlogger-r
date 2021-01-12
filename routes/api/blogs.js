@@ -5,13 +5,14 @@ const mongoose=require('mongoose');
 const passport=require('passport');
 const { json } = require('body-parser');
 //Bring in user and blogs
-const User=require('../../models/User');
+const Blogger=require('../../models/Blogger');
 const Blog=require('../../models/Blog');
 
 
 
 //Bring in validation
-const validateBlogInput=require('../../validation/blog')
+const validateBlogInput=require('../../validation/blog');
+const validateCommentInput=require('../../validation/comment');
 
 
 
@@ -117,7 +118,7 @@ router.post('/create/:blog_id', passport.authenticate('jwt', {session:false}), (
 router.delete('/:blog_id', passport.authenticate('jwt', {session:false}), (req, res)=>{
 
 
-    User.findOne({user:req.user.id})
+    Blogger.findOne({user:req.user.id})
     .then(Blogger=>{
         Blog.findById(req.params.blog_id).
         then(blog=>{
@@ -138,13 +139,13 @@ router.delete('/:blog_id', passport.authenticate('jwt', {session:false}), (req, 
 
 
 
-//@route Post api/posts/like/:blog_id
+//@route Post api/blogs/like/:blog_id
 //@desc increment like of the blogger
 //@access private 
 
 router.post('/like/:blog_id', passport.authenticate('jwt', {session:false}), (req, res)=>{
   
-    User.findOne({user: req.user.id})
+    Blogger.findOne({user: req.user.id})
     .then(blogger=>{
         Blog.findById(req.params.blog_id)
         .then( blog =>{
@@ -163,33 +164,83 @@ router.post('/like/:blog_id', passport.authenticate('jwt', {session:false}), (re
 
 
 
-//@route Post api/posts/unlike/:blog_id
+//@route Post api/blogs/unlike/:blog_id
 //@desc unincrement like of the blogger
 //@access private 
 
 router.post('/unlike/:blog_id', passport.authenticate('jwt', {session:false}), (req, res)=>{
   
-    User.findOne({user: req.user.id})
+    Blogger.findOne({user: req.user.id})
     .then(blogger=>{
         Blog.findById(req.params.blog_id)
         .then( blog =>{
             console.log(blog);
-            if(blog.likes.filter(like=>like.user.toString()===req.user.id).length==0){
+            if(blog.likes.filter(like=>like.user.toString()===req.user.id).length===0){
 
                 res.status(400).json({nolike:'You dont have a like to remove'});
             }
 
-            const indexToRemove=blog.likes.filter(like=>like.user.id).indexOf(req.user.id);
-                blog.likes.splice(indexToRemove, 1);
+            const indexToRemove=blog.likes.map(item=> item.user.toString()).indexOf(req.user.id);
 
-           
-
-            blog.save().then(blog=>res.json(blog));
+            blog.likes.splice(indexToRemove, 1);
+            blog.save().then(blog=> res.json(blog));
         })
+        .catch(err=> res.status(404).json({noblog: 'No blog found'}));
     })
 });
 
 
+//@route Post api/blogs/comment/:blog_id
+//@desc add a comment to a  blog
+//@access private 
+
+
+router.post('/comment/:blog_id', passport.authenticate('jwt', {session:false}), (req, res)=>{
+    const {errors, isValid}=validateCommentInput(req.body);
+
+    if(!isValid){
+        return res.status(400).json(errors);
+    }
+    console.log(req.params.blog_id);
+    Blog.findById(req.params.blog_id)
+    .then(blog=>{
+        if(!blog){
+            errors.noblog='the blogs may be deleted or doesnt exist';
+            res.status(404).json(errors)
+        }
+
+        const comment={};
+        comment.name=req.body.name;
+        comment.avatar=req.body.avatar,
+        comment.text=req.body.text,
+        comment.user=req.user.id;
+        blog.comment.unshift(comment);
+        blog.save().then(blog=> res.json(blog));
+    }).catch(err=> res.status(404).json({noblog:'no blog found'}));
+});
+
+
+//@route Delete api/blogs/comment/:id/:blog_id
+//@desc delete a comment from a blog
+//@access private 
+
+
+router.delete('/comment/:blog_id/:comment_id', passport.authenticate('jwt', {session:false}), (req, res)=>{
+
+    Blog.findById(req.params.blog_id)
+    .then(blog=>{
+        if(blog.comment.filter(item=>item._id.toString()===req.params.comment_id).length===0){
+            res.status(404).json({nocomment:'Comment not found'});
+        }
+        else
+        {
+            const indexToRemove=blog.comment.map(item=>item._id).indexOf(req.params.comment_id);
+
+            blog.comment.splice(indexToRemove, 1);
+            blog.save().then(blog=>res.json(blog));
+        }
+    }).catch(err=> res.status(404).json({noblog:'No blog by this id'}));
+})
 
 
 
