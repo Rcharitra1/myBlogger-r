@@ -1,1 +1,3 @@
-export const TEST_DISPATCH='TEST_DISPATCH';
+
+export const ERR_DISPATCH='ERR_DISPATCH';
+export const SET_USER_DISPATCH='USER_DISPATCH';

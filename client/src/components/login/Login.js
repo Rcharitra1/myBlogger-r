@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {loginUser} from '../../actions/autherizeActions';
 
- export default class Login extends Component {
+import {Link} from 'react-router-dom';
+class Login extends Component {
    constructor(){
      super()
      this.state={
@@ -14,17 +17,26 @@ import {Link} from 'react-router-dom';
      this.onSubmit=this.onSubmit.bind(this);
 
    }
+   componentWillReceiveProps(nextProps){
+    if(nextProps.auth.isAuthenticated){
+      this.props.history.push('/current');
+    }
+    if(nextProps.errors){
+      this.setState({errors:nextProps.errors})
+    }
+  }
+   
    onChange(e){
      this.setState({[e.target.name]: e.target.value})
    }
-
+   
    onSubmit(e){
      e.preventDefault();
      const existingUser={
        email:this.state.email,
        password:this.state.password
      };
-     console.log(existingUser);
+     this.props.loginUser(existingUser);
    }
     render() {
         return (
@@ -63,5 +75,20 @@ import {Link} from 'react-router-dom';
         )
     }
 }
+
+
+Login.propTypes = {
+  loginUser:PropTypes.func.isRequired,
+  auth:PropTypes.object.isRequired,
+  errors:PropTypes.object.isRequired
+  
+}
+
+const mapStateToProps = (state)=>({
+  auth:state.auth,
+  errors:state.errors
+});
+
+export default connect(mapStateToProps, {loginUser})(Login);
 
 
