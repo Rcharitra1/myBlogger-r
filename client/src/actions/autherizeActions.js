@@ -41,3 +41,11 @@ export const setUser=(decodeJwt)=>{
     }
 }
 
+export const logoutUser=()=> dispatch=>{
+    localStorage.removeItem('jwtToken');
+
+    delete axios.defaults.headers.common['Authorization'];
+    dispatch(setUser({}))
+
+}
+
