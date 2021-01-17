@@ -3,11 +3,14 @@ import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {logoutUser} from '../../actions/autherizeActions';
+import {Redirect} from 'react-router-dom';
+
+import {clearBlogger} from '../../actions/bloggerActions';
 
 class NavBar extends Component {
     onLogoutClick(e){
       e.preventDefault();
-    
+      this.props.clearBlogger();
       this.props.logoutUser();
       
     }
@@ -46,7 +49,7 @@ class NavBar extends Component {
 <div className="collapse navbar-collapse" id="main_nav">
 
 <ul className="navbar-nav">
-  <li className="nav-item active"> <Link className="nav-link" to="/Bloggers">View Bloggers</Link> </li>
+  <li className="nav-item active"> <Link className="nav-link" to="/Bloggers">Checkout Blogs</Link> </li>
 
  
 </ul>
@@ -65,6 +68,7 @@ class NavBar extends Component {
 
 NavBar.propTypes={
   logoutUser:PropTypes.func.isRequired,
+  clearBlogger:PropTypes.func.isRequired,
   auth:PropTypes.object.isRequired
 }
 
@@ -72,5 +76,5 @@ const mapStateToProps=(state)=>({
   auth:state.auth
 })
 
-export default connect(mapStateToProps, {logoutUser} )(NavBar);
+export default connect(mapStateToProps, {logoutUser, clearBlogger} )(NavBar);
 

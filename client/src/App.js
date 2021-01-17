@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import store from './store';
 import authorizedJwtToken from './utils/authorizedJwtToken';
@@ -9,7 +9,7 @@ import jwt_decode from 'jwt-decode';
 
 import {logoutUser, setUser} from './actions/autherizeActions';
 
-
+import PrivateRoute from './components/shared/PrivateRoute';
 import './App.css';
 import NavBar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
@@ -17,7 +17,9 @@ import Landing from './components/layout/Landing';
 import Login from './components/login/Login';
 import Register from './components/register/Register';
 import Current from './components/shared/current';
-
+import BloggerPage from './components/blogger/blogger';
+import { clearBlogger } from './actions/bloggerActions';
+import CreateBlogger from './components/BloggerDetails/CreateBlogger';
 
 if(localStorage.jwtToken){
   authorizedJwtToken(localStorage.jwtToken);
@@ -27,6 +29,7 @@ if(localStorage.jwtToken){
   const currentTime=Date.now()/1000;
   if(decodeJwt.exp<currentTime){
     store.dispatch(logoutUser());
+    store.dispatch(clearBlogger());
     window.location.href='/login';
     localStorage.removeItem('jwtToken');
 
@@ -46,6 +49,16 @@ class App extends Component {
       <Route exact path="/register" component={Register}/>
 
       <Route exact path="/current" component={Current}/>
+      <Switch>
+      <PrivateRoute exact path="/blogger" component={BloggerPage}/>
+      
+      </Switch>
+      <Switch>
+      <PrivateRoute exact path="/blogger/create"
+      component={CreateBlogger}
+      />
+      </Switch>
+      
       </div>
       
 
