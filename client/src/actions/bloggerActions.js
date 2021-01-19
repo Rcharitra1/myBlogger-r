@@ -28,3 +28,13 @@ export const clearBlogger = () =>{
         type:CLEAR_BLOGGER_DISPATCH
     }
 }
+
+export const createBlogger =(bloggerData, history)=>dispatch =>{
+    axios.post('/api/blogger', bloggerData)
+    .then(res => history.push('/blogger'))
+    .catch(err=>
+        dispatch({
+            type:ERR_DISPATCH,
+            payload:err.response.data
+        }))
+}
