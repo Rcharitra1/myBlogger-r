@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {CLEAR_BLOGGER_DISPATCH, ERR_DISPATCH, GET_BLOGGER_DISPATCH, LOAD_BLOGGER_DISPATCH} from './types_SD';
+import {CLEAR_BLOGGER_DISPATCH, ERR_DISPATCH, GET_BLOGGER_DISPATCH, LOAD_BLOGGER_DISPATCH, SET_USER_DISPATCH} from './types_SD';
 
 
 export const getCurrentBlogger =()=> dispatch =>{
@@ -37,4 +37,22 @@ export const createBlogger =(bloggerData, history)=>dispatch =>{
             type:ERR_DISPATCH,
             payload:err.response.data
         }))
+}
+
+
+export const deleteAccount=()=>dispatch=>{
+    if(window.confirm('You are going to delete your account. This is irreverible. Are you sure?')){
+        axios.delete('api/blogger')
+        .then(res => 
+            dispatch(
+                {
+                    type:SET_USER_DISPATCH,
+                    payload:{}
+                })
+                ).catch(err =>
+                    dispatch({
+                        type:ERR_DISPATCH,
+                        payload:err.response.data
+                    }))
+    }
 }
