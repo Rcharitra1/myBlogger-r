@@ -36,14 +36,14 @@ const IconGroup=(
 
 
 IconGroup.propTypes={
-    name:PropTypes.string.isRequired,
+    name:PropTypes.string,
     placeholder:PropTypes.string,
     value:PropTypes.string.isRequired,
     info:PropTypes.string,
     error:PropTypes.string,
     icon:PropTypes.string,
     type:PropTypes.string.isRequired,
-    onChange:PropTypes.func.isRequired,
+    onChange:PropTypes.func,
     disabled:PropTypes.string
 }
 

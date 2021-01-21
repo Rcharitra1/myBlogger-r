@@ -22,6 +22,8 @@ import { clearBlogger } from './actions/bloggerActions';
 import CreateBlogger from './components/BloggerDetails/CreateBlogger';
 
 import EditBlogger from './components/BloggerDetails/EditBlogger';
+import CreateExperience from './components/BloggerExtra/Experience'
+import CreateEducation from './components/BloggerExtra/Education';
 
 if(localStorage.jwtToken){
   authorizedJwtToken(localStorage.jwtToken);
@@ -64,6 +66,19 @@ class App extends Component {
       <Switch>
       <PrivateRoute exact path="/blogger/edit"
       component={EditBlogger}
+      />
+      </Switch>
+
+      <Switch>
+      <PrivateRoute exact path="/blogger/experience"
+      component={CreateExperience}
+      />
+      </Switch>
+
+
+      <Switch>
+      <PrivateRoute exact path="/blogger/education"
+      component={CreateEducation}
       />
       </Switch>
       

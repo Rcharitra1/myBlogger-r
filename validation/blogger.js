@@ -33,8 +33,8 @@ module.exports = function validateBloggerInput(data){
     }
 
     if(!isEmpty(data.youtube)){
-        if(!Validator.isURL(data.socialHandles.youtube)){
-            errors.twitter='Not a valid handle';
+        if(!Validator.isURL(data.youtube)){
+            errors.youtube='Not a valid handle';
         }
     }
     return{

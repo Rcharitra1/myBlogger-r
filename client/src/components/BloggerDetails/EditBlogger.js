@@ -54,16 +54,18 @@ import isEmpty from '../../validations/isEmpty';
 
              blogger.bio= !isEmpty(blogger.bio)? blogger.bio:'';
 
-             blogger.social = !isEmpty(blogger.social) ? blogger.social : {};
+             blogger.socialHandles = !isEmpty(blogger.socialHandles) ? blogger.socialHandles : {};
 
-             blogger.facebook = !isEmpty(blogger.social.facebook)?
-             blogger.social.facebook : '';
+           
 
-             blogger.twitter = !isEmpty(blogger.social.twitter)?
-             blogger.social.twitter : '';
+             blogger.twitter = !isEmpty(blogger.socialHandles.twitter)?
+             blogger.socialHandles.twitter : '';
 
-             blogger.youtube = !isEmpty(blogger.social.youtube)?
-             blogger.social.youtube : '';
+             blogger.youtube = !isEmpty(blogger.socialHandles.youtube)?
+             blogger.socialHandles.youtube : '';
+
+             blogger.facebook = !isEmpty(blogger.socialHandles.facebook)?
+             blogger.socialHandles.facebook : '';
 
              blogger.speciality= !isEmpty(blogger.speciality) ? blogger.speciality : '';
 
@@ -94,7 +96,7 @@ import isEmpty from '../../validations/isEmpty';
              twitter:this.state.twitter,
              facebook:this.state.facebook
          };
-
+  
          this.props.createBlogger(bloggerData, this.props.history);
 
      }
@@ -194,7 +196,7 @@ import isEmpty from '../../validations/isEmpty';
             error={this.state.errors.youtube}
             />
         )}
-        <div class="btn-group mb-5">
+        <div className="btn-group mb-5">
         <button type="submit" className="btn btn-primary">Save Changes</button>
 
         <Link to="/blogger" className="btn btn-success">Back to Blogger details</Link>

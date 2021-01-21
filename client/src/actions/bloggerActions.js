@@ -56,3 +56,24 @@ export const deleteAccount=()=>dispatch=>{
                     }))
     }
 }
+
+
+export const addExperience = (expData, history)=> dispatch => {
+    axios.post('/api/blogger/experience', expData)
+    .then(res => history.push('/blogger'))
+    .catch(err=> 
+        dispatch({
+            type: ERR_DISPATCH,
+            payload:err.response.data
+        }));
+}
+
+export const addEducation = (eduData, history)=> dispatch => {
+    axios.post('/api/blogger/education', eduData)
+    .then(res => history.push('/blogger'))
+    .catch(err=> 
+        dispatch({
+            type: ERR_DISPATCH,
+            payload:err.response.data
+        }));
+}

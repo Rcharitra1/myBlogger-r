@@ -34,12 +34,12 @@ class BloggerPage extends Component {
                     <div className="row my-2">
                     <Link to="/blogger/edit" className="col-4 btn btn-dark text-light">Edit Blogger</Link>
 
-                    <Link to="/blogger/education" className="col-4 btn  btn-primary text-light">{(blogger.education.length)?"View Education":"Add Education" }</Link>
+                    <Link to="/blogger/education" className="col-3 btn  btn-primary text-light">{(blogger.education.length)?"View Education":"Add Education" }</Link>
 
-                    <Link to="/blogger/experience" className="col-3 btn btn-success text-light">{(blogger.experience.length)?"View Experience":"Add Experience" }</Link>
+                    <Link to="/blogger/experience" className="col-4 btn btn-success text-light">{(blogger.experience.length)?"View Experience":"Add Experience" }</Link>
                    
                     </div>
-                    <button onClick={this.onDeleteClick.bind(this)} className=" btn btn-danger form-control col-md-2">Delete Account</button>
+                    <button onClick={this.onDeleteClick.bind(this)} className=" btn btn-danger form-control">Delete Account</button>
                     </div>
                     
                     
@@ -61,7 +61,7 @@ class BloggerPage extends Component {
                 <div className="dashboard">
                 <div className="container">
                 <div className="row">
-                <div className="col-md-12">
+                <div className="col-12">
                 <h1>Blogger Details</h1>
                 {bloggerContent}
                 </div>

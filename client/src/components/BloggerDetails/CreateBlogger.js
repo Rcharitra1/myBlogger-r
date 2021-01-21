@@ -107,7 +107,7 @@ import TextAreaGroup from '../shared/TextArea';
             value={this.state.bio}
             onChange={this.onChange}
             />
-           <button className="btn btn-secondary mb-3" type="submit" onClick={()=>{
+           <button className="btn btn-secondary mb-3" type="button" onClick={()=>{
                this.setState(prevState=> ({
                    toggleSocialLinks:!prevState.toggleSocialLinks
                }))

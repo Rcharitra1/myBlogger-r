@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import TextFieldGroup from '../shared/TextFieldGroup';
@@ -18,19 +17,25 @@ class BloggerDetails extends Component {
                     <IconGroup
                     value={blogger.socialHandles.facebook}
                     icon="fa fa-facebook"
-                    disabled={true}
+                    disabled="disabled"
+                    type="text"
+                  
                     />}
                 {(blogger.socialHandles.twitter) && 
                     <IconGroup
                     value={blogger.socialHandles.twitter}
                     icon="fa fa-twitter"
-                    disabled={true}
+                    disabled="disabled"
+                    type="text"
+                   
                     />}
                 {(blogger.socialHandles.youtube) && 
                     <IconGroup
                     value={blogger.socialHandles.youtube}
                     icon="fa fa-youtube"
-                    disabled={true}
+                    disabled="disabled"
+                    type="text"
+                 
                     />}
                 
              </div>)
@@ -44,26 +49,31 @@ class BloggerDetails extends Component {
             <div className="card-body">
              <TextFieldGroup
              value={`Bio: ${blogger.bio}`}
-             disabled={true}
+             disabled="disabled"
              />
 
              <TextFieldGroup
              value={`Speciality: ${blogger.speciality}`}
-             disabled={true}
+             
+             name="speciality"
+             disabled="disabled"
              />
              <TextFieldGroup
              value={`Organization: ${blogger.organization}`}
-             disabled={true}/>
+             disabled="disabled"
+             name={blogger.organization}/>
 
              <TextFieldGroup
              value={`Location: ${blogger.location}`}
-             disabled={true}
+             disabled="disabled"
+             name={blogger.location}
              />
 
              <TextFieldGroup
              value={`Joining Date: ${new Date(blogger.joiningdate).toISOString().slice(0, 10)}`}
 
-             disabled={true}
+             d   disabled="disabled"
+             name={blogger.joiningdate}
              />
              
              {SocialHandles}
