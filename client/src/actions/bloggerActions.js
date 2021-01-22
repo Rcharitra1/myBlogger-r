@@ -77,3 +77,36 @@ export const addEducation = (eduData, history)=> dispatch => {
             payload:err.response.data
         }));
 }
+
+export const deleteExp = (id) =>
+dispatch=>{
+    axios.delete(`/api/blogger/experience/${id}`)
+    .then(res=> 
+        dispatch
+        ({
+                type:GET_BLOGGER_DISPATCH,
+                payload:res.data
+            })
+        ).catch(err=> 
+        dispatch({
+                type:ERR_DISPATCH,
+                payload:err.response.data
+        }))
+}
+
+export const deleteEdu = (id) =>
+dispatch =>
+{
+    axios.delete(`/api/blogger/education/${id}`)
+    .then(res=> 
+        dispatch({
+            type:GET_BLOGGER_DISPATCH,
+            payload:res.data
+        }))
+        .catch(err=>
+            dispatch(
+                {
+                    type:ERR_DISPATCH,
+                    payload:err.response.data
+                }))
+}

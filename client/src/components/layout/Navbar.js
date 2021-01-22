@@ -49,7 +49,7 @@ class NavBar extends Component {
 <div className="collapse navbar-collapse" id="main_nav">
 
 <ul className="navbar-nav">
-  <li className="nav-item active"> <Link className="nav-link" to="/Bloggers">Checkout Blogs</Link> </li>
+  <li className="nav-item active"> <Link className="nav-link" to="/blogs/all">Checkout Blogs</Link> </li>
 
  
 </ul>

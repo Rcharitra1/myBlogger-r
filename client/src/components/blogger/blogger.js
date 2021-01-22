@@ -5,6 +5,8 @@ import {getCurrentBlogger, deleteAccount} from '../../actions/bloggerActions';
 import Loading from '../shared/loading';
 import {Link} from 'react-router-dom';
 import BloggerDetails from './bloggerDetails.js';
+import DisplayExperience from '../BloggerExtra/DisplayExperience';
+import DisplayEducation from '../BloggerExtra/DisplayEducation';
 
 
 
@@ -29,14 +31,19 @@ class BloggerPage extends Component {
             if(Object.keys(blogger).length>0){
                 bloggerContent=(
                     <div>
-                    <h2>Display Profile</h2>
                     <BloggerDetails />
-                    <div className="row my-2">
-                    <Link to="/blogger/edit" className="col-4 btn btn-dark text-light">Edit Blogger</Link>
 
-                    <Link to="/blogger/education" className="col-3 btn  btn-primary text-light">{(blogger.education.length)?"View Education":"Add Education" }</Link>
+                    {(blogger.experience.length!==0)? <DisplayExperience experience={blogger.experience}/>: ""}
 
-                    <Link to="/blogger/experience" className="col-4 btn btn-success text-light">{(blogger.experience.length)?"View Experience":"Add Experience" }</Link>
+
+                    {(blogger.education.length!==0)? <DisplayEducation education={blogger.education}/>:""}
+                   
+                    <div className="d-flex justify-content-space-between my-2">
+                    <Link to="/blogger/edit" className="btn btn-dark text-light ">Edit Blogger</Link>
+
+                    <Link to="/blogger/education" className="btn  btn-primary text-light">Add Education</Link>
+
+                    <Link to="/blogger/experience" className="btn btn-success text-light">Add Experience</Link>
                    
                     </div>
                     <button onClick={this.onDeleteClick.bind(this)} className=" btn btn-danger form-control">Delete Account</button>

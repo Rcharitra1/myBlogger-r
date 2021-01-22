@@ -49,7 +49,7 @@ class CreateEducation extends Component {
             current:this.state.current,
             degree:this.state.degree
         };
-        console.log(newEdu);
+        
         this.props.addEducation(newEdu, this.props.history)
     }
 

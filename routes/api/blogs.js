@@ -44,7 +44,7 @@ router.get('/user/:blog_id', (req, res)=>{
 })
 
 
-//@route Get api/blogs/users/all
+//@route Get api/blogs/all
 //@desc Get all blogs
 //@access Public
 
