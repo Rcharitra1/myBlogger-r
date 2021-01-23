@@ -31,7 +31,7 @@ router.get('/test', (req, res)=> res.json({msg:'blogs works'}));
 
 
 
-router.get('/user/:blog_id', (req, res)=>{
+router.get('/blog/:blog_id', (req, res)=>{
     Blog.findOne({_id:req.params.blog_id})
     .then(blog=>{
         if(!blog){

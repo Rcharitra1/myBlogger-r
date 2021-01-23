@@ -24,7 +24,9 @@ import CreateBlogger from './components/BloggerDetails/CreateBlogger';
 import EditBlogger from './components/BloggerDetails/EditBlogger';
 import CreateExperience from './components/BloggerExtra/Experience'
 import CreateEducation from './components/BloggerExtra/Education';
-import AllBlogs from './components/Blogs/AllBlogs'
+import AllBlogs from './components/Blogs/AllBlogs';
+import ViewBlog from './components/Blogs/ViewBlog';
+
 
 if(localStorage.jwtToken){
   authorizedJwtToken(localStorage.jwtToken);
@@ -55,6 +57,7 @@ class App extends Component {
 
       <Route exact path="/current" component={Current}/>
       <Route exact path="/blogs/all" component={AllBlogs}/>
+      <Route exact path="/blogs/blog" component={ViewBlog}/>
       <Switch>
       <PrivateRoute exact path="/blogger" component={BloggerPage}/>
       
@@ -85,6 +88,9 @@ class App extends Component {
       component={CreateEducation}
       />
       </Switch>
+
+
+  
       
       </div>
       

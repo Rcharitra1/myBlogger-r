@@ -1,4 +1,4 @@
-import {GET_ALL_BLOGS, LOAD_BLOG_DISPATCH} from '../actions/types_SD';
+import {GET_ALL_BLOGS, GET_BLOG, LOAD_BLOG_DISPATCH} from '../actions/types_SD';
 const initialState={
     blogger:null,
     blog:null,
@@ -18,7 +18,14 @@ export default function (state=initialState, action){
         case LOAD_BLOG_DISPATCH:
             return {
                 ...state,
+                blog:null,
                 loading:true
+            }
+        case GET_BLOG:
+            return{
+                ...state,
+                blog:action.payload,
+                loading:false
             }
 
         default:
