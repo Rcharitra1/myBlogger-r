@@ -45,6 +45,34 @@ export const viewBlog = (id, history) => dispatch=>
 }
 
 
+export const deleteComment = (blogid, commentid) => dispatch=>{
+    axios.delete(`/api/blogs/comment/${blogid}/${commentid}`)
+    .then(res=> 
+        dispatch({
+            type:GET_BLOG,
+            payload:res.data
+        }))
+        .catch(err => dispatch({
+            type:ERR_DISPATCH,
+            payload:err.response.data
+        }))
+}
+
+
+export const addComment = (comment,blogid) => dispatch =>
+{
+    axios.post(`/api/blogs/comment/${blogid}`,comment)
+    .then(res => dispatch({
+        type:GET_BLOG,
+        payload:res.data
+    }))
+    .catch(err=>dispatch({
+        type:ERR_DISPATCH,
+        payload:err.response.data
+    }))
+}
+
+
 
 
 

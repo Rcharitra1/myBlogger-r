@@ -1,13 +1,13 @@
 const Validator=require('validator');
 const isEmpty=require('./is-empty');
 
-module.exports = function validateLoginInput(data){
+module.exports = function validateBlogInput(data){
     let errors={};
 
     data.heading=!isEmpty(data.heading)? data.heading:'';
     data.text=!isEmpty(data.text)? data.text:'';
 
-    if(!Validator.isLength(data.heading, {min:1, max:150})){
+    if(!Validator.isLength(data.subHeading, {min:1, max:150})){
         errors.heading='heading accepts characters between 1 and 150';
     }
 
@@ -16,8 +16,8 @@ module.exports = function validateLoginInput(data){
     }
 
 
-    if(Validator.isEmpty(data.heading)){
-        errors.heading='heading is a required field';
+    if(Validator.isEmpty(data.subHeading)){
+        errors.heading='SubHeading is a required field';
     }
 
     if(Validator.isEmpty(data.text)){

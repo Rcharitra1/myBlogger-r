@@ -6,9 +6,13 @@ const BlogSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:'users'
     },
+    heading:{
+        type:String,
+        required:true
+    },
     section:[
        {
-           heading:{
+           subHeading:{
                type:String,
                required:true
            },

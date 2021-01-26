@@ -35,12 +35,12 @@ class AllBlogs extends Component {
                 <div className="col-md-6 my-2" key={m._id}>
                 <div className="card" style={{height:'300px'}} >
                 <div className="card-header">
-                 By {m.name}
+                 By {m.name} {<h3>{m.heading}</h3>}
                 </div>
                 <div className="card-body">
                   {m.section.map(s=>(
                       <div key={s._id} className="text-truncate">
-                    <h5 className="card-title">{s.heading}</h5>
+                    <h5 className="card-title">{s.subHeading}</h5>
                     <p className="card-text">{s.text}</p>
                     </div>
                   ))}

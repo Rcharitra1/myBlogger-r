@@ -72,17 +72,20 @@ router.get('/all', (req, res)=>{
 
 router.post('/create', passport.authenticate('jwt', {session:false}), (req, res)=>{
     console.log(req.body);
+    console.log(req.user);
     const newBlog=new Blog({
-        name:req.body.name,
-        avatar:req.body.avatar,
-        user:req.user.id
+        user:req.user.id,
+        name:req.user.name,
+        avatar:req.user.avatar,
+        
+        heading:req.body.heading
 
     });
     newBlog.save().then(newBlog=>res.json(newBlog));
 });
 
 //@route POST api/blogs/:blog_id
-//@desc create Post
+//@desc create a section
 //@access Private
 
 router.post('/create/:blog_id', passport.authenticate('jwt', {session:false}), (req, res)=>{
@@ -98,12 +101,12 @@ router.post('/create/:blog_id', passport.authenticate('jwt', {session:false}), (
     }
     Blog.findOne({_id:req.params.blog_id})
     .then(newBlog=>{
-        const blog={
-            heading:req.body.heading,
+        const section={
+            subHeading:req.body.subHeading,
             text:req.body.text
         }
 
-        newBlog.section.push(blog);
+        newBlog.section.push(section);
         newBlog.save().then(newBlog=>res.json(newBlog));
     });
 
@@ -111,7 +114,7 @@ router.post('/create/:blog_id', passport.authenticate('jwt', {session:false}), (
 
 
 //@route delete api/blogs/:blog_id
-//@desc create Post
+//@desc delete a section
 //@access Private
 
 
@@ -210,8 +213,8 @@ router.post('/comment/:blog_id', passport.authenticate('jwt', {session:false}), 
         }
 
         const comment={};
-        comment.name=req.body.name;
-        comment.avatar=req.body.avatar,
+        comment.name=req.user.name;
+        comment.avatar=req.user.avatar,
         comment.text=req.body.text,
         comment.user=req.user.id;
         blog.comment.unshift(comment);
