@@ -18,7 +18,6 @@ export default function (state=initialState, action){
         case LOAD_BLOG_DISPATCH:
             return {
                 ...state,
-                blog:null,
                 loading:true
             }
         case GET_BLOG:

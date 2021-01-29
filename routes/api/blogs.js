@@ -14,6 +14,8 @@ const Blog=require('../../models/Blog');
 const validateBlogInput=require('../../validation/blog');
 const validateCommentInput=require('../../validation/comment');
 
+const validateSectionInput=require('../../validation/section')
+
 
 
 //@route Get api/blogs/test
@@ -71,8 +73,13 @@ router.get('/all', (req, res)=>{
 
 
 router.post('/create', passport.authenticate('jwt', {session:false}), (req, res)=>{
-    console.log(req.body);
-    console.log(req.user);
+    
+    const {errors, isValid}=validateBlogInput(req.body);
+    if(!isValid)
+    {
+        return res.status(400).json(errors);
+
+    }
     const newBlog=new Blog({
         user:req.user.id,
         name:req.user.name,
@@ -92,9 +99,8 @@ router.post('/create/:blog_id', passport.authenticate('jwt', {session:false}), (
 
 
 
-    console.log(req.body);
 
-    const {errors, isValid}=validateBlogInput(req.body);
+    const {errors, isValid}=validateSectionInput(req.body);
 
     if(!isValid){
         return res.status(400).json(errors);

@@ -73,6 +73,41 @@ export const addComment = (comment,blogid) => dispatch =>
 }
 
 
+export const createBlog = (blogObj, history) =>
+dispatch =>
+{
+    dispatch(setBlogLoading());
+    axios.post('/api/blogs/create', blogObj)
+    .then(res => {
+        history.push('/blogs/section')
+        dispatch(setBlogLoading())
+        dispatch({
+            type:GET_BLOG,
+            payload:res.data
+        })
+    })
+    .catch(err=> dispatch({
+        type:ERR_DISPATCH,
+        payload:err.response.data
+    }))
 
+}
+
+export const createSection = (sectionObj, blogId) =>
+dispatch =>
+{
+    axios.post(`api/blog/${blogId}`, sectionObj)
+    .then(res=> dispatch({
+        type:GET_BLOG,
+        payload:res.data
+    }))
+    .catch(err=> dispatch({
+        type:ERR_DISPATCH,
+        payload:err.response.data
+    }))
+    
+    
+
+}
 
 

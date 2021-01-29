@@ -26,6 +26,8 @@ import CreateExperience from './components/BloggerExtra/Experience'
 import CreateEducation from './components/BloggerExtra/Education';
 import AllBlogs from './components/Blogs/AllBlogs';
 import ViewBlog from './components/Blogs/ViewBlog';
+import CreateBlog from './components/Blogs/CreateBlog';
+import CreateSection from './components/Blogs/CreateSection';
 
 
 if(localStorage.jwtToken){
@@ -60,6 +62,19 @@ class App extends Component {
       <Route exact path="/blogs/blog" component={ViewBlog}/>
       <Switch>
       <PrivateRoute exact path="/blogger" component={BloggerPage}/>
+      
+
+      
+      </Switch>
+      <Switch>
+      <PrivateRoute exact path="/blogs/create" component={CreateBlog}/>
+      
+
+      
+      </Switch>
+
+      <Switch>
+      <PrivateRoute exact path="/blogs/section" component={CreateSection}/>
       
 
       

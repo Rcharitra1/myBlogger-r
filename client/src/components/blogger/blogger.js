@@ -20,6 +20,7 @@ class BloggerPage extends Component {
         this.props.deleteAccount();
 
     }
+    
     render() 
     {
         const {user}=this.props.auth;
@@ -69,7 +70,12 @@ class BloggerPage extends Component {
                 <div className="container">
                 <div className="row">
                 <div className="col-12">
+                <div className="d-flex justify-content-between my-2">
                 <h1>Blogger Details</h1>
+                <Link to="/blogs/create" className="btn btn-danger"><i className="fa fa-plus-circle"></i>&nbsp;<i className="fab fa-blogger-b"></i></Link>
+                </div>
+                
+                
                 {bloggerContent}
                 </div>
                 </div>
