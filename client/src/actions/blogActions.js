@@ -28,7 +28,7 @@ export const setBlogLoading = () =>{
 export const viewBlog = (id, history) => dispatch=>
 {
     dispatch(setBlogLoading());
-    history.push('/blogs/blog')
+    history && history.push('/blogs/blog');
     axios.get(`/api/blogs/blog/${id}`)
     .then(res=> 
         dispatch({
@@ -76,15 +76,10 @@ export const addComment = (comment,blogid) => dispatch =>
 export const createBlog = (blogObj, history) =>
 dispatch =>
 {
-    dispatch(setBlogLoading());
     axios.post('/api/blogs/create', blogObj)
     .then(res => {
+        dispatch(viewBlog(res.data._id));
         history.push('/blogs/section')
-        dispatch(setBlogLoading())
-        dispatch({
-            type:GET_BLOG,
-            payload:res.data
-        })
     })
     .catch(err=> dispatch({
         type:ERR_DISPATCH,
@@ -96,11 +91,8 @@ dispatch =>
 export const createSection = (sectionObj, blogId) =>
 dispatch =>
 {
-    axios.post(`api/blog/${blogId}`, sectionObj)
-    .then(res=> dispatch({
-        type:GET_BLOG,
-        payload:res.data
-    }))
+    axios.post(`/api/blogs/create/${blogId}`, sectionObj)
+    .then(res=> dispatch(viewBlog(res.data._id)))
     .catch(err=> dispatch({
         type:ERR_DISPATCH,
         payload:err.response.data
@@ -108,6 +100,30 @@ dispatch =>
     
     
 
+}
+
+
+export const deleteSection = (id, sectionObj)=> dispatch =>
+{
+    axios.post(`/api/blogs/section/${id}`, sectionObj)
+    .then(res => dispatch(viewBlog(res.data._id)))
+    .catch(err=> dispatch(
+        {
+            type:ERR_DISPATCH,
+            payload:err.response.data
+        })
+    )
+}
+
+export const deleteBlog = (id, history) =>
+dispatch =>
+{
+    axios.delete(`/api/blogs/${id}`)
+    .then(res => history.push('/blogger'))
+    .catch(err=> dispatch({
+        type:ERR_DISPATCH,
+        payload:err.response.data
+    }))
 }
 
 

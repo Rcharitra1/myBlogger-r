@@ -3,7 +3,9 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Loading from '../shared/loading';
 import IconGroup from '../shared/IconGroup';
-import {deleteComment, addComment} from '../../actions/blogActions';
+import {deleteComment, addComment, deleteBlog, deleteSection} from '../../actions/blogActions';
+
+import {withRouter} from 'react-router-dom';
 
 const themes=['primary', 'success','dark'];
 
@@ -30,20 +32,28 @@ class ViewBlog extends Component {
 
     onDeleteClick(blogid, commentid)
     {
-        if(window.confirm('Are you sure you want to delete this comment')){
-            console.log(blogid, commentid);
-            this.props.deleteComment(blogid, commentid);
-        }
+        this.props.deleteComment(blogid, commentid);
     }
 
-    deleteBlog(id)
+ 
+    onDeleteSection(sectionId)
+    {
+        let sectionObj={
+            sectionId:sectionId
+        };
+        this.props.deleteSection(this.props.blog.blog._id, sectionObj);
+    }
+
+    onDeleteBlog(id)
     {
         if(window.confirm('Are you sure you want to delete this blog?')){
-            console.log("Im here, Yay");
-            console.log(id);
+            this.props.deleteBlog(id, this.props.history);
         }
         
     }
+
+
+    
 
     onAddCommentClick(id){
         const newComment=
@@ -91,12 +101,13 @@ class ViewBlog extends Component {
     <div className="card-body" key={sec._id}>
     <h5 className="card-title">{sec.subHeading}</h5>
     <p className="card-text">{sec.text}</p>
+    <button className="btn btn-danger" onClick={this.onDeleteSection.bind(this, sec._id)}><i className="fas fa-trash"></i></button>
     
   </div>
   ))
   }
   <div className="card-body">
-    {(this.props.auth.user.id===blog.user) && <button type="button" onClick={this.deleteBlog.bind(this, blog._id)} className="btn btn-danger">Delete</button> }
+    {(this.props.auth.user.id===blog.user) && <button type="button" onClick={this.onDeleteBlog.bind(this, blog._id)} className="btn btn-danger">Delete</button> }
 
     
     </div>
@@ -172,7 +183,10 @@ ViewBlog.propTypes={
     auth:PropTypes.object.isRequired,
     deleteComment:PropTypes.func,
     addComment:PropTypes.func,
-    errors:PropTypes.object
+    errors:PropTypes.object,
+    deleteBlog:PropTypes.func,
+    deleteSection:PropTypes.func
+
 }
 
 
@@ -186,4 +200,4 @@ const mapStateToProps= state=>({
 })
 
 
-export default connect(mapStateToProps, {deleteComment, addComment})(ViewBlog);
+export default connect(mapStateToProps, {deleteComment, addComment, deleteBlog, deleteSection})(withRouter(ViewBlog));

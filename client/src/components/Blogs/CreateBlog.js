@@ -36,7 +36,6 @@ class CreateBlog extends Component {
     onCreateClick(e)
     {
         e.preventDefault();
-        console.log(this.state.heading)
         const blogObj={
             heading:this.state.heading
         }   
@@ -51,13 +50,13 @@ class CreateBlog extends Component {
             <div className="row">
             <div className="col-md-6">
             <h1>Create Blog</h1>
-            <div class="input-group mb-3">
+            <div className="input-group mb-3">
             <input type="text" className="form-control" placeholder="Add heading" 
             value={this.state.heading}
             onChange={this.onChange}
             name="heading"
             />
-            <div class="input-group-append">
+            <div className="input-group-append">
               <button className="btn btn-primary" type="submit" onClick={this.onCreateClick} ><i className="fa fa-plus"></i> &nbsp;Add</button>
             </div>
             {this.state.errors.heading && <p className="text-danger">{this.state.errors.heading}</p>}

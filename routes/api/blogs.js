@@ -120,9 +120,8 @@ router.post('/create/:blog_id', passport.authenticate('jwt', {session:false}), (
 
 
 //@route delete api/blogs/:blog_id
-//@desc delete a section
+//@desc delete a blog
 //@access Private
-
 
 router.delete('/:blog_id', passport.authenticate('jwt', {session:false}), (req, res)=>{
 
@@ -137,7 +136,7 @@ router.delete('/:blog_id', passport.authenticate('jwt', {session:false}), (req, 
 
                 
             }
-            blog.remove().then(()=> res.json({success:true}).catch(err=>res.status(404).json({postnotfound:'post wasnt found'})))
+            blog.remove().then(()=> res.json({success:true}).catch(err=>res.status(404).json({postnotfound:'blog wasnt found'})))
         }).catch(err=>res.json(err));
     });
     
@@ -146,6 +145,43 @@ router.delete('/:blog_id', passport.authenticate('jwt', {session:false}), (req, 
 });
 
 
+
+//@route Post api/blogs/section/:blog_id
+//delete a section
+//access private 
+
+
+router.post('/section/:blog_id', passport.authenticate('jwt', {session:false}), (req, res)=>
+{
+    Blogger.findOne({user: req.user.id})
+    .then(Blogger => {
+        Blog.findById(req.params.blog_id)
+        .then(blog=> {
+
+           
+            if(blog.user.toString()===req.user.id)
+            {
+                console.log(req.body.sectionId)
+                let indexRemoved;
+                for(let i=0; i<blog.section.length;i++)
+                {
+                    if(blog.section[i]._id.toString()===req.body.sectionId)
+                    {
+                        indexRemoved=i;
+                    }
+                }
+
+                blog.section.splice(indexRemoved, 1);
+                blog.save().then(blog=> res.status(200).json(blog));
+
+            }else
+            {
+                res.json({error : "not authorized"})
+            }
+
+        }).catch(err=> res.status(400).json({noblog: 'no blog found'}))
+    })
+})
 
 
 //@route Post api/blogs/like/:blog_id
