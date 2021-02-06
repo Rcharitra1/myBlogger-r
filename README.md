@@ -1,4 +1,5 @@
-- myBlogger-r
+# myBlogger-r
+  ##notes
   - This is blogging website created using MERN Stack
   - This website employs Passport for authentication
   - This website uses heroku for deployment
