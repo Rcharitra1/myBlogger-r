@@ -24,7 +24,7 @@ class DisplayExperience extends Component {
             <td>{new Date(exp.from).toISOString().slice(0,10)}</td>
             <td>{exp.to ? new Date(exp.to).toISOString().slice(0,10) : "Current"}</td>
             <td>
-                <button className="btn btn-danger" onClick={this.onClick.bind(this, exp._id)}>Delete</button>
+                <button className="btn btn-danger" onClick={this.onClick.bind(this, exp._id)}><i className="fas fa-trash"></i></button>
             </td>
             </tr>
         ))

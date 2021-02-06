@@ -24,7 +24,7 @@ class DisplayEducation extends Component {
            <td>{edu.description}</td>
             <td>{edu.finished ? new Date(edu.finished).toISOString().slice(0,10) : "Current"}</td>
             <td>
-                <button className="btn btn-danger" onClick={this.onClick.bind(this, edu._id)}>Delete</button>
+                <button className="btn btn-danger" onClick={this.onClick.bind(this, edu._id)}><i className="fas fa-trash"></i></button>
             </td>
             </tr>
         ))

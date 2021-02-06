@@ -2,6 +2,7 @@ import {GET_ALL_BLOGS, GET_BLOG, LOAD_BLOG_DISPATCH} from '../actions/types_SD';
 const initialState={
     blogger:null,
     blog:null,
+    blogs:null,
     loading:false
 }
 
@@ -11,7 +12,7 @@ export default function (state=initialState, action){
         case GET_ALL_BLOGS:
             return{
                 ...state,
-                blog:action.payload,
+                blogs:action.payload,
                 loading:false
             }
             

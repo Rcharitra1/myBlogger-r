@@ -1,9 +1,10 @@
 const { mongo } = require("mongoose")
 
-module.exports={
-    mongoURI:"mongodb+srv://rcharitra1:1234@cluster0.t0wcg.mongodb.net/mBlogger?retryWrites=true&w=majority",
-    secretOrKey:'secret'
-    
+if(process.env.NODE_ENV==='production')
+{
+    module.exports = require('./keys_prod');
+}else{
+    module.exports = require ('./keys_dev');
 }
 
 

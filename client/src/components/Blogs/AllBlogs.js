@@ -21,16 +21,16 @@ class AllBlogs extends Component {
     }
     render() {
 
-        const {blog}=this.props.blog;
+        const {blogs}=this.props.blog;
         const loading="";
         let content;
         
-        if(blog==null || loading){
+        if(blogs==null || loading){
             content=<Loading />
         }else
         {
-            const blogs=[...blog];;
-            content = blogs.map(m=>(
+            const blogsAll=[...blogs];;
+            content = blogsAll.map(m=>(
            
                 <div className="col-md-6 my-2" key={m._id}>
                 <div className="card" style={{height:'300px'}} >

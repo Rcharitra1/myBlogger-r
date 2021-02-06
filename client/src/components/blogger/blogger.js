@@ -39,12 +39,12 @@ class BloggerPage extends Component {
 
                     {(blogger.education.length!==0)? <DisplayEducation education={blogger.education}/>:""}
                    
-                    <div className="d-flex justify-content-space-between my-2">
-                    <Link to="/blogger/edit" className="btn btn-dark text-light ">Edit Blogger</Link>
+                    <div className="d-flex justify-content-between my-2">
+                    <Link to="/blogger/edit" className="btn btn-dark text-light mr-0">Edit Blogger</Link>
 
-                    <Link to="/blogger/education" className="btn  btn-primary text-light">Add Education</Link>
+                    <Link to="/blogger/education" className="btn  btn-primary text-light mr-0">Add Education</Link>
 
-                    <Link to="/blogger/experience" className="btn btn-success text-light">Add Experience</Link>
+                    <Link to="/blogger/experience" className="btn btn-success text-light mr-0">Add Experience</Link>
                    
                     </div>
                     <button onClick={this.onDeleteClick.bind(this)} className=" btn btn-danger form-control">Delete Account</button>
