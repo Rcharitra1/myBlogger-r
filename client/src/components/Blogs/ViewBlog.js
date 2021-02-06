@@ -101,7 +101,8 @@ class ViewBlog extends Component {
     <div className="card-body" key={sec._id}>
     <h5 className="card-title">{sec.subHeading}</h5>
     <p className="card-text">{sec.text}</p>
-    <button className="btn btn-danger" onClick={this.onDeleteSection.bind(this, sec._id)}><i className="fas fa-trash"></i></button>
+    {this.props.auth.user.id===blog.user && <button className="btn btn-danger" onClick={this.onDeleteSection.bind(this, sec._id)}><i className="fas fa-trash"></i></button>}
+    
     
   </div>
   ))
