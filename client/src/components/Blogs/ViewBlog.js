@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Loading from '../shared/loading';
 import IconGroup from '../shared/IconGroup';
-import {deleteComment, addComment, deleteBlog, deleteSection, addLike, removeLike, setBlogLoading} from '../../actions/blogActions';
+import {deleteComment, addComment, deleteBlog, deleteSection, addLike, removeLike} from '../../actions/blogActions';
 
 import {withRouter} from 'react-router-dom';
 

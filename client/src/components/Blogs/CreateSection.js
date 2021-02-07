@@ -63,6 +63,8 @@ import {withRouter} from 'react-router-dom';
         let heading ="";
         let section ="";
         let displaySection="";
+        let displayDelete="";
+     
         if(blog==null || loading)
         {
             heading=<Loading/>
@@ -70,7 +72,13 @@ import {withRouter} from 'react-router-dom';
         }
         else
         {
+  
             heading = blog.heading;
+
+
+            displayDelete = (
+                <button type="button" onClick={this.onDeleteBlog.bind(this, this.props.blog.blog._id)} className="btn btn-danger mt-2"><i className="fas fa-trash"></i> Delete Blog</button>
+            )
 
             section=
                 (
@@ -105,8 +113,7 @@ import {withRouter} from 'react-router-dom';
             if(blog.section.length!==0)
             {
                 let existingSection = [...blog.section];
-
-
+         
                 
                 displaySection=(
                 
@@ -135,7 +142,10 @@ import {withRouter} from 'react-router-dom';
             <h1 className="display-4">{heading}</h1>
             {displaySection}
             {section}
-            <button type="button" onClick={this.onDeleteBlog.bind(this, this.props.blog.blog._id)} className="btn btn-danger mt-2"><i className="fas fa-trash"></i> Delete Blog</button>
+            {displayDelete}
+            
+            
+           
             </div>
             </div>
    
