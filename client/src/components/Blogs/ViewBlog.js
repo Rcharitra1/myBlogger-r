@@ -3,14 +3,10 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Loading from '../shared/loading';
 import IconGroup from '../shared/IconGroup';
-import {deleteComment, addComment, deleteBlog, deleteSection, addLike, removeLike} from '../../actions/blogActions';
+import {deleteComment, addComment, deleteBlog, deleteSection, addLike, removeLike, setBlogLoading} from '../../actions/blogActions';
 
 import {withRouter} from 'react-router-dom';
 
-const themes=['primary', 'success','dark'];
-
-let randomTheme=Math.floor(Math.random()*themes.length);
-let selectedTheme=themes[randomTheme];
 class ViewBlog extends Component {
 
     constructor(props)
@@ -89,6 +85,13 @@ class ViewBlog extends Component {
         let addComment="";
         let addLike="";
 
+        const themes=['primary', 'success','dark'];
+
+        let randomTheme=Math.floor(Math.random()*themes.length);
+        let selectedTheme=themes[randomTheme];
+
+
+
         if(blog==null ||  loading)
         {
             content=<Loading/>
@@ -97,6 +100,7 @@ class ViewBlog extends Component {
             
             content =(
 
+                
                 
                 
                 <div className={`card text-white bg-${selectedTheme} mb-3 key=${blog._id}`}>

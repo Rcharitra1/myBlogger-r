@@ -129,22 +129,16 @@ import {withRouter} from 'react-router-dom';
             }
         }
         return (
-            <div className="container">
+            <div className="container-lg">
             <div className="row">
+            <div className="mx-auto my-2">
             <h1 className="display-4">{heading}</h1>
-            </div>
-            <div className="row">
             {displaySection}
-            </div>
-            <div className="row">      
-           
             {section}
-            
-            </div>
-
-            <div className="row">
             <button type="button" onClick={this.onDeleteBlog.bind(this, this.props.blog.blog._id)} className="btn btn-danger mt-2"><i className="fas fa-trash"></i> Delete Blog</button>
             </div>
+            </div>
+   
 
 
                 
