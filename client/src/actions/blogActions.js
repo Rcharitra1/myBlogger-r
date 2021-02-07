@@ -127,3 +127,28 @@ dispatch =>
 }
 
 
+export const addLike = (id) =>
+dispatch=>
+{
+    axios.post(`/api/blogs/like/${id}`)
+    .then(res => dispatch(viewBlog(id)))
+    .catch(err => dispatch({
+        type:ERR_DISPATCH,
+        payload:err.response.data
+    }))
+}
+
+
+
+export const removeLike = (id) =>
+dispatch=>
+{
+    axios.post(`/api/blogs/unlike/${id}`)
+    .then(res => dispatch(viewBlog(id)))
+    .catch(err => dispatch({
+        type:ERR_DISPATCH,
+        payload:err.response.data
+    }))
+}
+
+

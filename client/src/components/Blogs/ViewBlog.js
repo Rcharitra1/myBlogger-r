@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Loading from '../shared/loading';
 import IconGroup from '../shared/IconGroup';
-import {deleteComment, addComment, deleteBlog, deleteSection} from '../../actions/blogActions';
+import {deleteComment, addComment, deleteBlog, deleteSection, addLike, removeLike} from '../../actions/blogActions';
 
 import {withRouter} from 'react-router-dom';
 
@@ -53,6 +53,16 @@ class ViewBlog extends Component {
     }
 
 
+   onLikeClick(id)
+   {
+       this.props.addLike(id);
+   }
+
+
+   onUnlikeClick(id)
+   {
+       this.props.removeLike(id);
+   }
     
 
     onAddCommentClick(id){
@@ -77,6 +87,7 @@ class ViewBlog extends Component {
         let content="";
         let comments="";
         let addComment="";
+        let addLike="";
 
         if(blog==null ||  loading)
         {
@@ -108,7 +119,13 @@ class ViewBlog extends Component {
   ))
   }
   <div className="card-body">
-    {(this.props.auth.user.id===blog.user) && <button type="button" onClick={this.onDeleteBlog.bind(this, blog._id)} className="btn btn-danger">Delete</button> }
+  <div className="d-flex justify-content-between">
+  {(this.props.auth.user.id===blog.user) && <button type="button" onClick={this.onDeleteBlog.bind(this, blog._id)} className="btn btn-danger">Delete</button> }
+  <i className="far fa-thumbs-up mt-2">{this.props.blog.blog.likes.length}</i>
+  </div>
+  
+   
+    
 
     
     </div>
@@ -137,6 +154,37 @@ class ViewBlog extends Component {
         
     )
 
+    if(this.props.auth.isAuthenticated)
+    {
+        addLike = (
+        
+            <div className="d-block my-2">
+            
+            {
+
+                checkUser(this.props.blog.blog.likes, this.props.auth.user.id)
+                &&
+          
+                <button type="button" className="btn btn-success" onClick={this.onLikeClick.bind(this, blog._id)}><i className="far fa-thumbs-up"></i></button>
+            }
+
+            {
+                !checkUser(this.props.blog.blog.likes, this.props.auth.user.id)
+                &&
+                <button type="button" className="btn btn-danger" onClick={this.onUnlikeClick.bind(this, blog._id)}><i className="far fa-thumbs-down"></i></button>
+            }
+                
+              
+                
+          
+            
+            </div>
+            
+    )
+    }
+
+    
+
     addComment=(
         <div>
         {this.props.auth.isAuthenticated && 
@@ -156,7 +204,12 @@ class ViewBlog extends Component {
             <button type="button" className=" mb-3 btn btn-primary" onClick={this.onAddCommentClick.bind(this, blog._id)}>Post</button>
         }
 
+
+      
+
         </div>
+
+       
     )
         
 
@@ -168,7 +221,9 @@ class ViewBlog extends Component {
             <div className="row">
             <div className="mx-auto my-5">
             {content}
+            {addLike}
             {comments}
+            
             {addComment}
             </div>
             
@@ -179,6 +234,24 @@ class ViewBlog extends Component {
     }
 }
 
+
+
+function checkUser (data, id)
+{
+    let userLike = true;
+    for(let i=0; i<data.length;i++)
+    {
+        if(data[i].user.toString()===id.toString())
+        {
+            userLike = false;
+        }
+    }
+
+
+
+    return userLike;
+}
+
 ViewBlog.propTypes={
     blog:PropTypes.object,
     auth:PropTypes.object.isRequired,
@@ -186,7 +259,9 @@ ViewBlog.propTypes={
     addComment:PropTypes.func,
     errors:PropTypes.object,
     deleteBlog:PropTypes.func,
-    deleteSection:PropTypes.func
+    deleteSection:PropTypes.func,
+    addLike:PropTypes.func,
+    removeLike:PropTypes.func
 
 }
 
@@ -201,4 +276,4 @@ const mapStateToProps= state=>({
 })
 
 
-export default connect(mapStateToProps, {deleteComment, addComment, deleteBlog, deleteSection})(withRouter(ViewBlog));
+export default connect(mapStateToProps, {deleteComment, addComment, deleteBlog, deleteSection, addLike, removeLike})(withRouter(ViewBlog));

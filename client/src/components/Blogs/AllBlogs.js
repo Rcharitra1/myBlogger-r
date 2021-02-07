@@ -44,7 +44,11 @@ class AllBlogs extends Component {
                     <p className="card-text">{s.text}</p>
                     </div>
                   ))}
-                  <button className="btn btn-primary mt-2" onClick={this.onClick.bind(this, m._id)}>Details</button>
+                  <div className="d-flex justify-content-start align-center my-1">
+                  <button className="btn btn-primary mr-1" onClick={this.onClick.bind(this, m._id)}>Details</button>
+                  <i className="far fa-thumbs-up mt-2">{m.likes.length}</i>
+                  </div>
+                
                 </div>
               </div>
               </div>
