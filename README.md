@@ -1,6 +1,9 @@
 # myBlogger-r
   ## notes
   - This is blogging website created using MERN Stack
+  - This website uses React at front end
+  - This website uses node and express at backend
+  - This website uses MongoDB for online database
   - This website employs Passport for authentication
   - This website uses heroku for deployment
   - This website uses bcryptjs for password hashing
